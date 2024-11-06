@@ -9,13 +9,13 @@
 
 all: riscv hex
 
-PLATFORM ?= arty_scr1
+PLATFORM ?= tang_primer_20_k
 
 apps = scbl
 
-ld-script?=scbl.ld
+ld-script?=scbl_lite.ld
 
-FLAGS_MARCH ?= rv32im
+FLAGS_MARCH ?= rv32ima_zicsr
 FLAGS_MABI ?= ilp32
 
 PLATFORM_HDR=plf_$(PLATFORM).h
@@ -46,7 +46,7 @@ C_OPT_FLAGS += -O2 -ffast-math -fomit-frame-pointer -fno-exceptions \
 ASM_DEFINES :=
 INCLUDE_DIRS += -Icommon -I. -Isrc
 
-c_src = uart.c xmodem.c init.c trap.c leds.c
+c_src = uart.c xmodem.c init.c trap.c
 asm_src = startup.S
 
 c_objs = $(patsubst %.c, $(build_dir)/%.o, $(c_src))
