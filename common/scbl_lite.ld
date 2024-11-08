@@ -11,7 +11,8 @@ OUTPUT_ARCH( "riscv" )
 ENTRY(_start)
 
 MEMORY {
-  RAM (rwx) : ORIGIN = 0xFFFF8000, LENGTH = 8K
+  RAM (rwx) : ORIGIN = 0xFFFFF000, LENGTH = 4K
+  ROM (rx) : ORIGIN = 0xFFEF0000, LENGTH = 32K
 }
 
 SEC_ALIGN = 32;
@@ -32,29 +33,34 @@ SECTIONS {
     __STACK_END__ = .;
   } >RAM
 
-  .bss ALIGN(SEC_ALIGN) : {
+  .bss : {
+    . = ALIGN(SEC_ALIGN);
     __BSS_START__ = .;
     *(.dynbss) *(.bss .bss.* .gnu.linkonce.b.*) *(COMMON)
   } >RAM
 
-  .sbss ALIGN(SEC_ALIGN) : {
+  .sbss : {
+    . = ALIGN(SEC_ALIGN);
     *(.sbss .sbss.* .gnu.linkonce.sb.*)
     *(.scommon)
     . = ALIGN(0x10);
     __BSS_END__ = .;
   } >RAM
 
-  .sdata ALIGN(SEC_ALIGN) : {
+  .sdata : {
+    . = ALIGN(SEC_ALIGN);
     *(.sdata .sdata.* .gnu.linkonce.s.*)
    __global_pointer$ = . + 0x800;
   } >RAM
 
-  .data ALIGN(SEC_ALIGN) : {
+  .data : {
+    . = ALIGN(SEC_ALIGN);
     *(.data .data.*)
   } >RAM
 
   /* thread-local data segments */
-  .tdata ALIGN(SEC_ALIGN) : {
+  .tdata : {
+    . = ALIGN(SEC_ALIGN);
     _tls_data = .;
     _tdata_begin = .;
     KEEP(*(.tdata .tdata.*));
@@ -62,7 +68,8 @@ SECTIONS {
     . = ALIGN(0x10);
   } >RAM
 
-  .tbss ALIGN(SEC_ALIGN) : {
+  .tbss : {
+    . = ALIGN(SEC_ALIGN);
     _tbss_begin = .;
     KEEP(*(.tbss .tbss.*));
     . = ALIGN(SEC_ALIGN);
@@ -77,27 +84,26 @@ SECTIONS {
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata.*)
   } >RAM
 
-  .rodata ALIGN(SEC_ALIGN) : {
+  .rodata : {
+    . = ALIGN(SEC_ALIGN);
     *(.rodata) *(.rodata.*) *(.gnu.linkonce.r.*)
   }
 
-  .text ALIGN(SEC_ALIGN) : {
+  .text : {
+    . = ALIGN(SEC_ALIGN);  
     __TEXT_START__ = .;
     *(.text .text*)
     KEEP(*(.init.text));
     __TEXT_END__ = .;
-  } >RAM
+  } >ROM
 
-  .startup ORIGIN(RAM) + LENGTH(RAM) - 0x800 : SUBALIGN(0x800) {
+  .startup ORIGIN(ROM) + 0x2000 : {
     KEEP(*(.startup));
-  } >RAM
+  } >ROM
 
-  .vectors ORIGIN(RAM) + LENGTH(RAM) - 0x100 : {
+  .vectors ORIGIN(ROM) + 0x2800 : {
     KEEP(*(.vectors));
-    FILL(0);
-    . = ALIGN(0x100) - 4;
-    LONG(0);
-  } >RAM
+  } >ROM
 
   /DISCARD/ : {
     *(.eh_frame .eh_frame.*)
