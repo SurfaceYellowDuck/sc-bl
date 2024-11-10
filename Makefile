@@ -24,13 +24,13 @@ CROSS_PATH ?=/opt/riscv/bin
 CROSS_COMPILE ?= $(CROSS_PATH)$(if $(CROSS_PATH),/)riscv64-unknown-elf-
 
 CC = $(CROSS_COMPILE)gcc
-CFLAGS = -Wa,-march=$(FLAGS_MARCH) -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -mstrict-align -std=gnu99 $(INCLUDE_DIRS) $(C_OPT_FLAGS) -Wall -Werror
+CFLAGS = -Wa,-march=$(FLAGS_MARCH) -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -mstrict-align -std=gnu99 $(INCLUDE_DIRS) $(C_OPT_FLAGS) -Wall -Werror --param=min-pagesize=0
 
 LIBS = -lgcc -lc
 LD = $(CC)
 LDFLAGS = -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -static -T common/$(ld-script) -Xlinker -nostdlib -nostartfiles -ffast-math -Wl,--gc-sections -Wl,-Map=$(@:.elf=.map)
 OBJDUMP = $(CROSS_COMPILE)objdump -w -x -s -S
-OBJCOPY = $(CROSS_COMPILE)objcopy
+OBJCOPY = $(CROSS_COMPILE)objcopy -j .rodata -j .text -j .startup -j .vectors
 
 ifdef PLATFORM
 CFLAGS += -DPLATFORM=$(PLATFORM) -DPLATFORM_HDR=\"$(PLATFORM_HDR)\"
