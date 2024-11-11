@@ -24,7 +24,7 @@ CROSS_PATH ?=/opt/riscv/bin
 CROSS_COMPILE ?= $(CROSS_PATH)$(if $(CROSS_PATH),/)riscv64-unknown-elf-
 
 CC = $(CROSS_COMPILE)gcc
-CFLAGS = -Wa,-march=$(FLAGS_MARCH) -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -mstrict-align -std=gnu99 $(INCLUDE_DIRS) $(C_OPT_FLAGS) -Wall -Werror --param=min-pagesize=0
+CFLAGS = -Wa,-march=$(FLAGS_MARCH) -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -mstrict-align -std=gnu99 $(INCLUDE_DIRS) $(C_OPT_FLAGS) -Wall -Werror
 
 LIBS = -lgcc -lc
 LD = $(CC)
