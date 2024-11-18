@@ -87,7 +87,7 @@ SECTIONS {
   .rodata : {
     . = ALIGN(SEC_ALIGN);
     *(.rodata) *(.rodata.*) *(.gnu.linkonce.r.*)
-  } >RAM
+  } >ROM
 
   .text : {
     . = ALIGN(SEC_ALIGN);  
