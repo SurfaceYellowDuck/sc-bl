@@ -47,38 +47,38 @@
 #define PLF_UART0_16550
 #define PLF_UART0_IRQ 0
 // FPGA build ID
-#define PLF_BLD_ID_ADDR  (PLF_MMIO_BASE + 0x1000)
+// #define PLF_BLD_ID_ADDR  (PLF_MMIO_BASE + 0x1000)
 // FPGA system ID
-#define PLF_SYS_ID_ADDR  (PLF_MMIO_BASE + 0)
+// #define PLF_SYS_ID_ADDR  (PLF_MMIO_BASE + 0)
 // LEDs
-#define PLF_PINLED_ADDR  (PLF_MMIO_BASE + 0x20000)
-#define PLF_PINLED_NUM   8
-#define PLF_PINLED_INV   0
-#define PLF_PINLED_NAME "LED"
-#define PLF_HEXLED_ADDR (PLF_MMIO_BASE + 0x22000)
-#define PLF_HEXLED_ADDR_MAP                     \
-    {(PLF_HEXLED_ADDR + 0x20), 8},              \
-    {(PLF_HEXLED_ADDR + 0x20), 0},              \
-    {(PLF_HEXLED_ADDR + 0x10), 8},              \
-    {(PLF_HEXLED_ADDR + 0x10), 0},              \
-    {(PLF_HEXLED_ADDR + 0x0), 8},               \
-    {(PLF_HEXLED_ADDR + 0x0), 0}
-#define PLF_HEXLED_PORT_WIDTH 2
-#define PLF_HEXLED_NUM 6
-#define PLF_HEXLED_INV 0xff
-#define PLF_HEXLED_NAME "Hex LED"
-#define HEXLED_SEG_E 0x01
-#define HEXLED_SEG_P 0x02
-#define HEXLED_SEG_D 0x04
-#define HEXLED_SEG_G 0x08
-#define HEXLED_SEG_C 0x10
-#define HEXLED_SEG_F 0x20
-#define HEXLED_SEG_A 0x40
-#define HEXLED_SEG_B 0x80
+// #define PLF_PINLED_ADDR  (PLF_MMIO_BASE + 0x20000)
+// #define PLF_PINLED_NUM   8
+// #define PLF_PINLED_INV   0
+// #define PLF_PINLED_NAME "LED"
+// #define PLF_HEXLED_ADDR (PLF_MMIO_BASE + 0x22000)
+// #define PLF_HEXLED_ADDR_MAP                     
+//     {(PLF_HEXLED_ADDR + 0x20), 8},              
+//     {(PLF_HEXLED_ADDR + 0x20), 0},              
+//     {(PLF_HEXLED_ADDR + 0x10), 8},              
+//     {(PLF_HEXLED_ADDR + 0x10), 0},              
+//     {(PLF_HEXLED_ADDR + 0x0), 8},               
+//     {(PLF_HEXLED_ADDR + 0x0), 0}
+// #define PLF_HEXLED_PORT_WIDTH 2
+// #define PLF_HEXLED_NUM 6
+// #define PLF_HEXLED_INV 0xff
+// #define PLF_HEXLED_NAME "Hex LED"
+// #define HEXLED_SEG_E 0x01
+// #define HEXLED_SEG_P 0x02
+// #define HEXLED_SEG_D 0x04
+// #define HEXLED_SEG_G 0x08
+// #define HEXLED_SEG_C 0x10
+// #define HEXLED_SEG_F 0x20
+// #define HEXLED_SEG_A 0x40
+// #define HEXLED_SEG_B 0x80
 // DIP switches
-#define PLF_DIP_ADDR (PLF_MMIO_BASE + 0x29000)
-#define PLF_DIP_NUM  10
-#define PLF_DIP_NAME "DIP sw"
+// #define PLF_DIP_ADDR (PLF_MMIO_BASE + 0x29000)
+// #define PLF_DIP_NUM  10
+// #define PLF_DIP_NAME "DIP sw"
 // external interrupt lines
 #define PLF_IRQ_MAP                      \
         [0 ... 31] = ~0,                 \
