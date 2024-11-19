@@ -11,7 +11,7 @@ OUTPUT_ARCH( "riscv" )
 ENTRY(_start)
 
 MEMORY {
-  RAM (rwx) : ORIGIN = 0xFFFFF000, LENGTH = 4K
+  RAM (rwx) : ORIGIN = 0xF0000000, LENGTH = 4K
   ROM (rx) : ORIGIN = 0xFFEF0000, LENGTH = 32K
 }
 
@@ -84,12 +84,7 @@ SECTIONS {
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata.*)
   } >RAM
 
-  .rodata : {
-    . = ALIGN(SEC_ALIGN);
-    *(.rodata) *(.rodata.*) *(.gnu.linkonce.r.*)
-  } >ROM
-
-  .text : {
+  .text ORIGIN(ROM) + 0x808 : {
     . = ALIGN(SEC_ALIGN);  
     __TEXT_START__ = .;
     *(.text .text*)
@@ -97,12 +92,20 @@ SECTIONS {
     __TEXT_END__ = .;
   } >ROM
 
-  .startup ORIGIN(ROM) + 0x2000 : {
+   .rodata ORIGIN(ROM) + 0x1cf4 : {
+    . = ALIGN(SEC_ALIGN);
+    *(.rodata) *(.rodata.*) *(.gnu.linkonce.r.*)
+  } >ROM
+
+  .startup ORIGIN(ROM) : SUBALIGN(0x800){
     KEEP(*(.startup));
   } >ROM
 
-  .vectors ORIGIN(ROM) + 0x2800 : {
+  .vectors ORIGIN(ROM) + 0x700 : {
     KEEP(*(.vectors));
+    FILL(0);
+    . = ALIGN(0x100);
+    LONG(0);
   } >ROM
 
   /DISCARD/ : {

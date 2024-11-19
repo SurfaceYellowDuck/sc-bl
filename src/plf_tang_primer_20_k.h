@@ -21,11 +21,11 @@
 // #define PLF_MEM_SIZE     (8*1024*1024)
 // #define PLF_MEM_ATTR     0
 // #define PLF_MEM_NAME     "SDRAM"
-#define PLF_TCM_BASE     (0xFFFFFF00)
+#define PLF_TCM_BASE     (0xF0000000)
 #define PLF_TCM_SIZE     (32*1024)
 #define PLF_TCM_ATTR     0
 #define PLF_TCM_NAME     "TCM"
-#define PLF_MTIMER_BASE  (0xFFFFFFE0)
+#define PLF_MTIMER_BASE  (0xF0040000)
 #define PLF_MTIMER_SIZE  (0x1000)
 #define PLF_MTIMER_ATTR  0
 #define PLF_MTIMER_NAME  "MTimer"
