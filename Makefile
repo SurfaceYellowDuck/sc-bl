@@ -16,6 +16,7 @@ apps = scbl
 ld-script?=scbl_lite.ld
 
 FLAGS_MARCH ?= rv32ima_zicsr
+
 FLAGS_MABI ?= ilp32
 
 PLATFORM_HDR=plf_$(PLATFORM).h
@@ -59,33 +60,34 @@ apps_elf = $(patsubst %, $(build_dir)/%.elf, $(basename $(apps)))
 apps_hex = $(patsubst %, $(build_dir)/%.hex, $(basename $(apps)))
 
 $(apps_elf): $(build_dir)/%.elf: $(build_dir)/%.o $(app_objs)
-	@echo "LD\t$@"
+	@printf "LD\t%s\n" "$@"
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(OBJDUMP) $@ > $(@:.elf=.dump)
 	$(OBJCOPY) -Obinary -S $@ $(@:.elf=.bin)
 
 $(build_dir)/%.o: src/%.c | $(build_dir)
-	@echo "CC\t$<"
+	@printf "CC\t%s\n" "$<"
 	@$(CC) $(CFLAGS) $(C_DEFINES) -c $< -o $@
 
 $(build_dir)/%.o: src/%.S | $(build_dir)
-	@echo "AS\t$<"
+	@printf "AS\t%s\n" "$<"
 	@$(CC) $(CFLAGS) $(ASM_DEFINES) -c $< -o $@
 
 $(build_dir)/%.o: common/%.c | $(build_dir)
-	@echo "CC\t$<"
+	@printf "CC\t%s\n" "$<"
 	@$(CC) $(CFLAGS) $(C_DEFINES) -c $< -o $@
 
 $(build_dir)/%.o: common/%.S | $(build_dir)
-	@echo "AS\t$<"
+	@printf "AS\t%s\n" "$<"
 	@$(CC) $(CFLAGS) $(ASM_DEFINES) -c $< -o $@
 
 $(build_dir)/%.o: %.c | $(build_dir)
+	@printf "CC\t%s\n" "$<"
 	@echo "CC\t$<"
 	@$(CC) $(CFLAGS) $(C_DEFINES) -c $< -o $@
 
 $(build_dir)/%.o: %.S | $(build_dir)
-	@echo "AS\t$<"
+	@printf "AS\t%s\n" "$<"
 	@$(CC) $(CFLAGS) $(ASM_DEFINES) -c $< -o $@
 
 # make Xilinx *.mem and Altera *.hex files
