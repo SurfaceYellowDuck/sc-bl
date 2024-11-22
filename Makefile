@@ -92,7 +92,7 @@ $(build_dir)/%.o: %.S | $(build_dir)
 
 # make Xilinx *.mem and Altera *.hex files
 $(apps_hex): $(build_dir)/%.hex: $(build_dir)/%.elf
-	echo "@00000000" > $(@:.hex=.mem) && hexdump -v -e '4/1 "%02x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
+	echo "@00000000" > $(@:.hex=.mem) && hexdump -v -e '"%08x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
 	./mk_altera_hex.sh $(@:.hex=.bin) $@
 
 riscv: $(apps_elf)
