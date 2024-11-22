@@ -80,11 +80,16 @@ SECTIONS {
 
   __TLS0_BASE__ = __C_STACK_TOP__ - __TLS_SIZE__;
 
-  .srodata ALIGN(SEC_ALIGN) : {
-    *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata.*)
-  } >RAM
+  .startup ORIGIN(ROM) : {
+    KEEP(*(.startup));
+  } >ROM
 
-  .text ORIGIN(ROM) + 0x808 : {
+  .vectors ORIGIN(ROM) + 0x300 : {
+    KEEP(*(.vectors));
+    . = ALIGN(0x100);
+  } >ROM = 0
+
+  .text ORIGIN(ROM) + 0x400 : {
     . = ALIGN(SEC_ALIGN);  
     __TEXT_START__ = .;
     *(.text .text*)
@@ -92,20 +97,12 @@ SECTIONS {
     __TEXT_END__ = .;
   } >ROM
 
-   .rodata ORIGIN(ROM) + 0x1cf4 : {
-    . = ALIGN(SEC_ALIGN);
+  .rodata : ALIGN(SEC_ALIGN) {
     *(.rodata) *(.rodata.*) *(.gnu.linkonce.r.*)
   } >ROM
 
-  .startup ORIGIN(ROM) : SUBALIGN(0x800){
-    KEEP(*(.startup));
-  } >ROM
-
-  .vectors ORIGIN(ROM) + 0x700 : {
-    KEEP(*(.vectors));
-    FILL(0);
-    . = ALIGN(0x100);
-    LONG(0);
+    .srodata : ALIGN(SEC_ALIGN) {
+    *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata.*)
   } >ROM
 
   /DISCARD/ : {
