@@ -69,8 +69,12 @@ int putchar(int ch) __attribute__((weak, alias("sc1f_uart_putchar")));
 
 void uart_puts(const char *s)
 {
-    while (*s)
-        sc1f_uart_putchar(*s++);
+    // *(volatile uint32_t*)0xffdf0000 = 'q';
+    while (*s){
+        // *(volatile uint32_t*)0xffdf0000 = 'q';
+        sc1f_uart_putchar(*s);
+        s++;
+    }
 }
 
 void uart_puthex64(uint64_t val)
