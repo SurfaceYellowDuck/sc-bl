@@ -31,7 +31,7 @@ LIBS = -lgcc -lc
 LD = $(CC)
 LDFLAGS = -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -static -T common/$(ld-script) -Xlinker -nostdlib -nostartfiles -ffast-math -Wl,--gc-sections -Wl,-Map=$(@:.elf=.map)
 OBJDUMP = $(CROSS_COMPILE)objdump -w -x -s -S
-OBJCOPY = $(CROSS_COMPILE)objcopy -j .rodata -j .text -j .startup -j .vectors
+OBJCOPY = $(CROSS_COMPILE)objcopy -j .startup -j .vectors -j .text  -j .rodata -j .srodata 
 
 ifdef PLATFORM
 CFLAGS += -DPLATFORM=$(PLATFORM) -DPLATFORM_HDR=\"$(PLATFORM_HDR)\"
