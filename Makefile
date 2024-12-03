@@ -9,14 +9,16 @@
 
 all: riscv hex
 
-PLATFORM ?= tang_primer_20_k
+PLATFORM ?= arty_scr1
 
 apps = scbl
-
+ifeq ($(PLATFORM), tang_primer_20_k)
 ld-script?=scbl_lite.ld
+else
+ld-script?=scbl.ld
+endif
 
-FLAGS_MARCH ?= rv32ima_zicsr
-
+FLAGS_MARCH ?= rv32im_zicsr
 FLAGS_MABI ?= ilp32
 
 PLATFORM_HDR=plf_$(PLATFORM).h
@@ -31,7 +33,11 @@ LIBS = -lgcc -lc
 LD = $(CC)
 LDFLAGS = -march=$(FLAGS_MARCH) -mabi=${FLAGS_MABI} -static -T common/$(ld-script) -Xlinker -nostdlib -nostartfiles -ffast-math -Wl,--gc-sections -Wl,-Map=$(@:.elf=.map)
 OBJDUMP = $(CROSS_COMPILE)objdump -w -x -s -S
-OBJCOPY = $(CROSS_COMPILE)objcopy -j .startup -j .vectors -j .text  -j .rodata -j .srodata 
+ifeq ($(PLATFORM), tang_primer_20_k)
+OBJCOPY = $(CROSS_COMPILE)objcopy -j .startup -j .vectors -j .text -j .rodata -j .srodata
+else
+OBJCOPY = $(CROSS_COMPILE)objcopy
+endif
 
 ifdef PLATFORM
 CFLAGS += -DPLATFORM=$(PLATFORM) -DPLATFORM_HDR=\"$(PLATFORM_HDR)\"
@@ -47,7 +53,7 @@ C_OPT_FLAGS += -O2 -ffast-math -fomit-frame-pointer -fno-exceptions \
 ASM_DEFINES :=
 INCLUDE_DIRS += -Icommon -I. -Isrc
 
-c_src = uart.c xmodem.c init.c trap.c
+c_src = uart.c xmodem.c init.c trap.c leds.c
 asm_src = startup.S
 
 c_objs = $(patsubst %.c, $(build_dir)/%.o, $(c_src))
@@ -92,9 +98,12 @@ $(build_dir)/%.o: %.S | $(build_dir)
 
 # make Xilinx *.mem and Altera *.hex files
 $(apps_hex): $(build_dir)/%.hex: $(build_dir)/%.elf
+ifeq ($(PLATFORM), tang_primer_20_k)
+	hexdump -v -e '"%08x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
+else
 	echo "@00000000" > $(@:.hex=.mem) && hexdump -v -e '"%08x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
 	./mk_altera_hex.sh $(@:.hex=.bin) $@
-
+endif
 riscv: $(apps_elf)
 
 hex: $(apps_hex)
