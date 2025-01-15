@@ -100,7 +100,7 @@ $(apps_hex): $(build_dir)/%.hex: $(build_dir)/%.elf
 ifeq ($(PLATFORM), tang_primer_20_k)
 	hexdump -v -e '"%08x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
 else
-	echo "@00000000" > $(@:.hex=.mem) && hexdump -v -e '"%08x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
+	echo "@00000000" > $(@:.hex=.mem) && hexdump -v -e '4/1 "%02x" "\n"' $(@:.hex=.bin) >> $(@:.hex=.mem)
 	./mk_altera_hex.sh $(@:.hex=.bin) $@
 endif
 riscv: $(apps_elf)
